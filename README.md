@@ -27,8 +27,9 @@ Ready to go? Grab some water and a nice snack, and let's dig in!
 2. [Windows Docker setup](#windows-docker-setup)
 3. [macOS Docker setup](#macos-docker-setup)
 4. [Linux Docker setup](#linux-docker-setup)
-5. [Create new repo from template](#-create-new-repo-from-template)
-6. [Platform setup](#%EF%B8%8F-platform-setup)
+5. [Lightweight database GUIs](#lightweight-database-guis)
+6. [Create new repo from template](#-create-new-repo-from-template)
+7. [Platform setup](#%EF%B8%8F-platform-setup)
    1. [dbt Cloud IDE](#%EF%B8%8F-dbt-cloud-ide-most-beginner-friendly)
    2. [dbt Cloud CLI](#-dbt-cloud-cli-if-you-prefer-to-work-locally)
    3. [Load the data](#-load-the-data)
@@ -51,7 +52,15 @@ Ready to go? Grab some water and a nice snack, and let's dig in!
 
 ## Windows Docker setup
 
-Install [Git for Windows](https://git-scm.com/download/win) and [Docker Desktop](https://www.docker.com/products/docker-desktop/). During Docker Desktop installation, enable the WSL 2 backend and Linux containers. Start Docker Desktop before continuing.
+Install the core tools with WinGet:
+
+```powershell
+winget install --id Git.Git -e
+winget install --id Docker.DockerDesktop -e
+winget install --id Microsoft.VisualStudioCode -e
+```
+
+During Docker Desktop installation, enable the WSL 2 backend and Linux containers. Start Docker Desktop before continuing.
 
 Open PowerShell and run:
 
@@ -89,7 +98,14 @@ The `-v` option permanently deletes the local PostgreSQL data volume.
 
 ## macOS Docker setup
 
-Install [Git](https://git-scm.com/downloads) and [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/). Start Docker Desktop before continuing.
+Install the core tools with Homebrew:
+
+```bash
+brew install git
+brew install --cask docker visual-studio-code
+```
+
+Start Docker Desktop before continuing.
 
 Open Terminal and run:
 
@@ -127,7 +143,14 @@ The `-v` option permanently deletes the local PostgreSQL data volume.
 
 ## Linux Docker setup
 
-Install [Git](https://git-scm.com/downloads), [Docker Engine](https://docs.docker.com/engine/install/), and the Docker Compose plugin. Start the Docker service before continuing.
+On Ubuntu or another Debian-based distribution, install Git with:
+
+```bash
+sudo apt update
+sudo apt install -y git
+```
+
+Install [Docker Engine](https://docs.docker.com/engine/install/), the Docker Compose plugin, and [Visual Studio Code](https://code.visualstudio.com/docs/setup/linux) using the instructions for your Linux distribution. Start the Docker service before continuing.
 
 Open a terminal and run:
 
@@ -162,6 +185,65 @@ docker compose up -d --build
 ```
 
 The `-v` option permanently deletes the local PostgreSQL data volume.
+
+## Lightweight database GUIs
+
+For a free, lightweight cross-platform GUI on Windows, macOS, or Linux, use [DBeaver Community](https://dbeaver.io/download/). If you already work in VS Code, [SQLTools](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools) with the [PostgreSQL driver](https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools-driver-pg) is a convenient alternative.
+
+Download DBeaver Community for your platform:
+
+- Windows: install with WinGet:
+
+   ```powershell
+   winget install --id DBeaver.DBeaver.Community -e
+   ```
+
+   You can also use the Windows installer from the [DBeaver Community downloads](https://dbeaver.io/download/) page.
+- macOS: install with Homebrew:
+
+   ```bash
+   brew install --cask dbeaver-community
+   ```
+
+   You can also use the macOS installer from the [DBeaver Community downloads](https://dbeaver.io/download/) page.
+- Linux: use the Linux package from the [DBeaver Community downloads](https://dbeaver.io/download/) page.
+
+If you prefer to stay inside VS Code, install SQLTools and its PostgreSQL driver:
+
+```bash
+code --install-extension mtxr.sqltools
+code --install-extension mtxr.sqltools-driver-pg
+```
+
+Start the Docker services before connecting:
+
+```bash
+docker compose up -d
+```
+
+Create a PostgreSQL connection with these values:
+
+```text
+Host:     localhost
+Port:     5432
+Database: jaffle_shop_dw
+Username: postgres
+Password: postgres
+```
+
+Open a SQL editor in the GUI and run a query such as:
+
+```sql
+SELECT *
+FROM public.customers
+LIMIT 10;
+```
+
+The database must be running before the GUI can connect. Stop the services when finished with:
+
+```bash
+docker compose down
+```
 
 ## 📓 Create new repo from template
 
