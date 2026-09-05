@@ -24,8 +24,11 @@ Ready to go? Grab some water and a nice snack, and let's dig in!
 ## Table of contents
 
 1. [Prerequisites](#-prerequisites)
-2. [Create new repo from template](#-create-new-repo-from-template)
-3. [Platform setup](#%EF%B8%8F-platform-setup)
+2. [Windows Docker setup](#windows-docker-setup)
+3. [macOS Docker setup](#macos-docker-setup)
+4. [Linux Docker setup](#linux-docker-setup)
+5. [Create new repo from template](#-create-new-repo-from-template)
+6. [Platform setup](#%EF%B8%8F-platform-setup)
    1. [dbt Cloud IDE](#%EF%B8%8F-dbt-cloud-ide-most-beginner-friendly)
    2. [dbt Cloud CLI](#-dbt-cloud-cli-if-you-prefer-to-work-locally)
    3. [Load the data](#-load-the-data)
@@ -45,6 +48,120 @@ Ready to go? Grab some water and a nice snack, and let's dig in!
 - A dbt Cloud account
 - A data warehouse (BigQuery, Snowflake, Redshift, Databricks, or Postgres) with adequate permissions to create a fresh database for this project and run dbt in it
 - _Optional_ Python 3.9 or higher (for generating synthetic data with `jafgen`)
+
+## Windows Docker setup
+
+Install [Git for Windows](https://git-scm.com/download/win) and [Docker Desktop](https://www.docker.com/products/docker-desktop/). During Docker Desktop installation, enable the WSL 2 backend and Linux containers. Start Docker Desktop before continuing.
+
+Open PowerShell and run:
+
+```powershell
+cd $HOME
+git clone https://github.com/TejaRebb/jaffle-shop-demo-docker-2026.git
+cd jaffle-shop-demo-docker-2026
+docker compose up -d --build
+docker compose ps
+docker compose logs -f dbt
+```
+
+Run dbt manually from PowerShell:
+
+```powershell
+docker compose exec dbt dbt build --profiles-dir profiles
+```
+
+Open a shell inside the dbt container:
+
+```powershell
+docker compose exec dbt sh
+dbt build --profiles-dir profiles
+exit
+```
+
+Reset the local database:
+
+```powershell
+docker compose down -v
+docker compose up -d --build
+```
+
+The `-v` option permanently deletes the local PostgreSQL data volume.
+
+## macOS Docker setup
+
+Install [Git](https://git-scm.com/downloads) and [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/). Start Docker Desktop before continuing.
+
+Open Terminal and run:
+
+```bash
+cd "$HOME"
+git clone https://github.com/TejaRebb/jaffle-shop-demo-docker-2026.git
+cd jaffle-shop-demo-docker-2026
+docker compose up -d --build
+docker compose ps
+docker compose logs -f dbt
+```
+
+Run dbt manually:
+
+```bash
+docker compose exec dbt dbt build --profiles-dir profiles
+```
+
+Open a shell inside the dbt container:
+
+```bash
+docker compose exec dbt sh
+dbt build --profiles-dir profiles
+exit
+```
+
+Reset the local database:
+
+```bash
+docker compose down -v
+docker compose up -d --build
+```
+
+The `-v` option permanently deletes the local PostgreSQL data volume.
+
+## Linux Docker setup
+
+Install [Git](https://git-scm.com/downloads), [Docker Engine](https://docs.docker.com/engine/install/), and the Docker Compose plugin. Start the Docker service before continuing.
+
+Open a terminal and run:
+
+```bash
+cd "$HOME"
+git clone https://github.com/TejaRebb/jaffle-shop-demo-docker-2026.git
+cd jaffle-shop-demo-docker-2026
+docker compose up -d --build
+docker compose ps
+docker compose logs -f dbt
+```
+
+Run dbt manually:
+
+```bash
+docker compose exec dbt dbt build --profiles-dir profiles
+```
+
+Open a shell inside the dbt container:
+
+```bash
+docker compose exec dbt sh
+dbt build --profiles-dir profiles
+exit
+```
+
+Reset the local database:
+
+```bash
+docker compose down -v
+docker compose up -d --build
+```
+
+The `-v` option permanently deletes the local PostgreSQL data volume.
 
 ## 📓 Create new repo from template
 
